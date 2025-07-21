@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><title>Registro</title></head>
+<body>
+<input id="t" placeholder="Título">
+<button onclick="r()">Registrar</button>
+<ul id="l"></ul>
+<script>
+const api = 'http://localhost:3000';
+async function r(){
+  let t=document.getElementById('t').value;
+  if(!t)return alert('Digite título');
+  await fetch(api+'/registrar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({titulo:t})});
+  document.getElementById('t').value='';
+  carregar();
+}
+async function carregar(){
+  let res=await fetch(api+'/registros');
+  let d=await res.json();
+  let ul=document.getElementById('l');
+  ul.innerHTML='';
+  d.forEach(r=>{
+    let li=document.createElement('li');
+    li.textContent=`[${new Date(r.horario).toLocaleString()}] ${r.titulo}`;
+    ul.appendChild(li);
+  });
+}
+carregar();
+</script>
+</body>
+</html>
