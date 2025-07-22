@@ -11,18 +11,34 @@
     <input type="datetime-local" id="horario" required>
     <button type="submit">Registrar</button>
   </form>
+
   <script>
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const titulo = document.getElementById('titulo').value;
-      const horario = document.getElementById('horario').value;
-      await fetch('http://localhost:3000/registrar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ titulo, horario })
-      });
-      alert('Registro salvo!');
-      document.getElementById('form').reset();
+      const horarioRaw = document.getElementById('horario').value;
+
+      // Ajusta o horário para o formato do MySQL: "YYYY-MM-DD HH:MM:SS"
+      const horario = horarioRaw.replace('T', ' ') + ':00';
+
+      try {
+        const resposta = await fetch('http://localhost:3000/registrar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ titulo, horario })
+        });
+
+        if (!resposta.ok) {
+          throw new Error('Erro ao registrar');
+        }
+
+        alert('Registro salvo com sucesso!');
+        document.getElementById('form').reset();
+      } catch (err) {
+        alert('Erro ao registrar. Veja o console.');
+        console.error(err);
+      }
     });
   </script>
 </body>

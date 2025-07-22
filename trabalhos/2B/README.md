@@ -24,7 +24,7 @@ docker-compose up --build
 
 3. Acesse:
 - Frontend: http://localhost
-- Backend (API): http://localhost:3000
+- Backend (API): http://localhost:3000 se n tiver dando certo com esse testar: http://localhost:3000/registros
 - Adminer: http://localhost:8081
 
 Use as credenciais do `.env` para acessar o Adminer.
