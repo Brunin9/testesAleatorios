@@ -9,7 +9,7 @@ app.use(express.json()); //isso deixa receber dado em json tipo o titulo
 //em vez de ficar abrindo e fechando conexoes mantem algumas conexcoes prontas pra usar ja 
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'db', //diz onde ta o bd de existir DB_HOST no .env usa ela senao usa 'db' q é o nome do servico no compose
-  user: process.env.DB_USER || 'root', //usa do env ou root como padrao
+  user: process.env.DB_USER || 'Bruno', //usa do env ou root como padrao
   password: process.env.DB_PASSWORD || 'Bruno123', //msm coisa 
   database: process.env.DB_NAME || 'registro_db', //é o banco que se conecta e como padrao é o 'registro_db'
 });
