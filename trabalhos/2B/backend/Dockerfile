@@ -11,4 +11,4 @@ COPY . .
 #expoe a port 3000 pra deixar a comunicao do server com o navegador
 EXPOSE 3000
 #é oq vai rodar pra iniciar o backend (vai rodar o start do json q vai iniciar o backend)
-CMD ["npm", "start"]
+CMD ["npm", "index.js"]

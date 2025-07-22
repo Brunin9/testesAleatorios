@@ -28,12 +28,12 @@ const pool = mysql.createPool({
 })();
 
 //rota pra um novo registro com horario atual
-app.post('/registrar', async (req, res) => { // req é a requisicao oq chega do servidor e a res é a resposta o que vai ser enviado de volta
-  const { titulo } = req.body;
-  if (!titulo) return res.status(400).json({ error: 'título é obrigatório' });
-
-  const horario = new Date(); //pega o horario atual
-  await pool.query('INSERT INTO registros (titulo, horario) VALUES (?, ?)', [titulo, horario]); //comando pra add na tabela do bd
+app.post('/registrar', async (req, res) => {
+  const { titulo, horario } = req.body;
+  if (!titulo || !horario) {
+    return res.status(400).json({ error: 'Título e horário são obrigatórios' });
+  }
+  await pool.query('INSERT INTO registros (titulo, horario) VALUES (?, ?)', [titulo, horario]);
   res.json({ status: 'ok' });
 });
 

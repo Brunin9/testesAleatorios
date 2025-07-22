@@ -1,50 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><title>Registro</title></head>
-// usuario digita o titulo do registro e clica no botao
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de Horários</title>
+</head>
 <body>
-<input id="titulo" placeholder="Título">
-<button onclick="registro()">Registrar</button>
-//lista dos registros q ja salvou
-<ul id="lista"></ul>
-<script>
-const api = 'http://localhost:3000';
- //essa função envia o título pro backend pra ser salvo
-async function registro(){
-  const titulo = document.getElementById('titulo').value;
-
-  if (!titulo) { //se n colocar titulo da um alerta e pede pra colocar titulo
-    alert('Digite um título!');
-    return;
-  }
-
-  // envia o título para o backend via POST
-    await fetch(api+ '/registrar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ titulo })
+  <h1>Registrar Horário</h1>
+  <form id="form">
+    <input type="text" id="titulo" placeholder="Digite o título" required>
+    <input type="datetime-local" id="horario" required>
+    <button type="submit">Registrar</button>
+  </form>
+  <script>
+    document.getElementById('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo').value;
+      const horario = document.getElementById('horario').value;
+      await fetch('http://localhost:3000/registrar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ titulo, horario })
+      });
+      alert('Registro salvo!');
+      document.getElementById('form').reset();
     });
-
-    document.getElementById('titulo').value = ''; // limpa o campo dps de enviar pro backend
-  carregar(); // atualiza a lista
-}
- // essa função busca todos os registros q estão salvos no banco
-async function carregar(){
-  const res = await fetch(api+ '/registros');
-  const dados = await res.json();
-
-  const lista = document.getElementById('lista');
-  lista.innerHTML = ''; // limpa a lista antes de preencher dnv
-
-  // add cada registro como item na lista
-  dados.forEach(reg=>{
-    let li=document.createElement('li');
-    li.textContent=`[${new Date(reg.horario).toLocaleString()}] ${reg.titulo}`;
-    lista.appendChild(li);
-  });
-}
-//quando for abrir a pagina ja carrega os dados
-carregar();
-</script>
+  </script>
 </body>
 </html>
