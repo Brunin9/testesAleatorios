@@ -1,5 +1,3 @@
-version: "3.8" #versao do docker compose
-
 services: #onde fica os containers
   backend:
     build: ./backend  #cria a imagem a partir do dockerfile dentro da pasta backend
