@@ -13,7 +13,24 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'registro_db',
 });
 
+// Função para aguardar a conexão com o banco de dados
+async function waitForDatabase() {
+  let connected = false;
+  while (!connected) {
+    try {
+      const conn = await pool.getConnection();
+      console.log('Conectado ao banco de dados!');
+      conn.release();
+      connected = true;
+    } catch (error) {
+      console.error('Aguardando conexão com o banco de dados...', error);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos antes de tentar novamente
+    }
+  }
+}
+
 (async () => {
+  await waitForDatabase();
   const conn = await pool.getConnection();
   await conn.query(`
     CREATE TABLE IF NOT EXISTS registros (

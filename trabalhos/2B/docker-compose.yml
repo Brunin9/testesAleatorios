@@ -1,6 +1,4 @@
 services: #onde fica os containers
-
-  
   db:
     image: mysql:8.0 #usa a imagem do sql na versao 8.0
     restart: always #se o container parar reinicia 
@@ -13,7 +11,7 @@ services: #onde fica os containers
       - db_data:/var/lib/mysql #para os dados persistirem msm dps de parar 
     networks:
       - rede #msm rede do backend, e do frontend pra poder comunicar 
-      
+
   backend:
     build: ./backend  #cria a imagem a partir do dockerfile dentro da pasta backend
     ports:
