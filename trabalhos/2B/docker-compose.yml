@@ -1,4 +1,19 @@
 services: #onde fica os containers
+
+  
+  db:
+    image: mysql:8.0 #usa a imagem do sql na versao 8.0
+    restart: always #se o container parar reinicia 
+    environment: #configuracao do Mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} #senha
+      MYSQL_DATABASE: ${MYSQL_DATABASE} #nomde do bd
+      MYSQL_USER: ${MYSQL_USER} #nome de user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} #senha do user
+    volumes:
+      - db_data:/var/lib/mysql #para os dados persistirem msm dps de parar 
+    networks:
+      - rede #msm rede do backend, e do frontend pra poder comunicar 
+      
   backend:
     build: ./backend  #cria a imagem a partir do dockerfile dentro da pasta backend
     ports:
@@ -20,18 +35,6 @@ services: #onde fica os containers
     networks:
       - rede  #msm rede do backend pra poder comunicar
 
-  db:
-    image: mysql:8.0 #usa a imagem do sql na versao 8.0
-    restart: always #se o container parar reinicia 
-    environment: #configuracao do Mysql
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} #senha
-      MYSQL_DATABASE: ${MYSQL_DATABASE} #nomde do bd
-      MYSQL_USER: ${MYSQL_USER} #nome de user
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD} #senha do user
-    volumes:
-      - db_data:/var/lib/mysql #para os dados persistirem msm dps de parar 
-    networks:
-      - rede #msm rede do backend, e do frontend pra poder comunicar 
 
   adminer:
     image: adminer #usa a imagem do adminer
