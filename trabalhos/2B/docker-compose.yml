@@ -1,39 +1,47 @@
-version: '3.8'
-
-services:
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: Bruno123
-      MYSQL_DATABASE: registro_db
-    volumes:
-      - db_data:/var/lib/mysql
-
+services: #onde fica os containers
   backend:
-    build:
-      context: .
-      dockerfile: MultipleFiles/Dockerfile
-    environment:
-      DB_HOST: db
-      DB_USER: Bruno
-      DB_PASSWORD: Bruno123
-      DB_NAME: registro_db
+    build: ./backend  #cria a imagem a partir do dockerfile dentro da pasta backend
     ports:
-      - "3000:3000"
+      - "3000:3000" #expõe a porta 3000 do container para a porta 3000 do host
+    environment:
+      - DB_HOST=db #o host é o seviço db
+      - DB_USER=${MYSQL_USER} #pega o user Bruno
+      - DB_PASSWORD=${MYSQL_PASSWORD} #pega a senha do user (Bruno123)
+      - DB_NAME=${MYSQL_DATABASE} #nome do bd
     depends_on:
-      - db
+      - db #so inicia se o bd estiver ok
+    networks:
+      - rede #conecta na msm rede dos outros pra poder comunicar
 
   frontend:
-    image: nginx:alpine
+    build: ./frontend #cria a imagem a partir do dockerfile dentro da pasta frontend
     ports:
-      - "80:80"
+      - "80:80" #porta 80 do host pra 80 do vontainer
+    networks:
+      - rede  #msm rede do backend pra poder comunicar
+
+  db:
+    image: mysql:8.0 #usa a imagem do sql na versao 8.0
+    restart: always #se o container parar reinicia 
+    environment: #configuracao do Mysql
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} #senha
+      MYSQL_DATABASE: ${MYSQL_DATABASE} #nomde do bd
+      MYSQL_USER: ${MYSQL_USER} #nome de user
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} #senha do user
     volumes:
-      - ./frontend:/usr/share/nginx/html
+      - db_data:/var/lib/mysql #para os dados persistirem msm dps de parar 
+    networks:
+      - rede #msm rede do backend, e do frontend pra poder comunicar 
 
   adminer:
-    image: adminer
+    image: adminer #usa a imagem do adminer
     ports:
-      - "8081:8080"
+      - "8081:8080" #acessa a porta
+    networks:
+      - rede #msm rede pra poder acessar o bd
 
-volumes:
-  db_data:
+volumes: #é oq faz ter a persistencia dos dados
+  db_data: #volume q o bd usa (volume é tipo um pendrive q guarda os dados separado do container dai se para o container n perde os dados)
+
+networks: #é oq conecta os containers
+  rede: #rede docker onde os containers ficam conectados
