@@ -29,7 +29,7 @@ services: #onde fica os containers
   frontend:
     build: ./frontend #cria a imagem a partir do dockerfile dentro da pasta frontend
     ports:
-      - "80:80" #porta 80 do host pra 80 do vontainer
+      - "8080:80" #porta 80 do host pra 80 do vontainer
     networks:
       - rede  #msm rede do backend pra poder comunicar
 
