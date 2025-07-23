@@ -23,7 +23,7 @@ docker-compose up --build
 ```
 
 3. Acesse:
-- Frontend: http://localhost
+- Frontend: http://localhost:8080:80
 - Backend (API): http://localhost:3000 se n tiver dando certo com esse testar: http://localhost:3000/registros
 - Adminer: http://localhost:8081
 
