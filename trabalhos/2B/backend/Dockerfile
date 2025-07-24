@@ -1,20 +1,20 @@
-# Use a imagem base do Node.js
+#usa a imagem do Node.js
 FROM node:14
 
-# Define o diretório de trabalho
+#define o diretório onde os comandos de baixo vão rodar
 WORKDIR /usr/src/app
 
-# Copia os arquivos de package.json e package-lock.json
+#copia o arquivo de package.json (é um arquivo de configuracao q é onde ficam as instruções pra funcionar)
 COPY package*.json ./
 
-# Instala as dependências
+#instala as dependências (oq ta no json)
 RUN npm install
 
-# Copia o restante dos arquivos do projeto
+#copia os arquivos da pasta pra dentro do container
 COPY . .
 
-# Expõe a porta que o app vai rodar
+#expõe a porta que o site vai rodar(é onde o backend vai receber oq deve fazer)
 EXPOSE 3000
 
-# Comando para iniciar o aplicativo
+#comando para iniciar o container (roda o index.js com node)
 CMD ["npm", "start"]

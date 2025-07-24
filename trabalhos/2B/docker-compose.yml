@@ -4,7 +4,7 @@ services: #onde fica os containers
     restart: always #se o container parar reinicia 
     environment: #configuracao do Mysql
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} #senha
-      MYSQL_DATABASE: ${MYSQL_DATABASE} #nomde do bd
+      MYSQL_DATABASE: ${MYSQL_DATABASE} #nome do bd
       MYSQL_USER: ${MYSQL_USER} #nome de user
       MYSQL_PASSWORD: ${MYSQL_PASSWORD} #senha do user
     volumes:
@@ -17,7 +17,7 @@ services: #onde fica os containers
     ports:
       - "3000:3000" #expõe a porta 3000 do container para a porta 3000 do host
     environment:
-      - DB_HOST=db #o host é o seviço db
+      - DB_HOST=db #o host é o serviço db
       - DB_USER=${MYSQL_USER} #pega o user Bruno
       - DB_PASSWORD=${MYSQL_PASSWORD} #pega a senha do user (Bruno123)
       - DB_NAME=${MYSQL_DATABASE} #nome do bd

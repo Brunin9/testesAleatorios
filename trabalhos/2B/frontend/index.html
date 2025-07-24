@@ -6,6 +6,7 @@
 </head>
 <body>
   <h1>Registrar Horário</h1>
+  <!-- para o user inserir titulo e horario-->
   <form id="form">
     <input type="text" id="titulo" placeholder="Digite o título" required>
     <input type="datetime-local" id="horario" required>
@@ -13,29 +14,34 @@
   </form>
 
   <script>
+    //quando o botao for clicado
     document.getElementById('form').addEventListener('submit', async (e) => {
-      e.preventDefault();
+      e.preventDefault(); //n deixa a pagina recarregar
 
+      //pega os valores q o usuario enviou
       const titulo = document.getElementById('titulo').value;
       const horarioRaw = document.getElementById('horario').value;
 
-      // Ajusta o horário para o formato do MySQL: "YYYY-MM-DD HH:MM:SS"
+      //ajusta o formato enviado para o formato q o Mysql usa
+      //pq ele envia por exemplo "2025-07-20T1:30" e precisa virar "2025-07-20 1:30:00"
       const horario = horarioRaw.replace('T', ' ') + ':00';
 
       try {
+        //envia os dados para o backend usando o metodo POST e JSON no corpo, POST: envia dados pro server, e o JSON é o formato de como os dados sao enviados
         const resposta = await fetch('http://localhost:3000/registrar', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ titulo, horario })
         });
-
+        //se o backend retornar um erro ele lanca a excessao 
         if (!resposta.ok) {
           throw new Error('Erro ao registrar');
         }
-
-        alert('Registro salvo com sucesso!');
+        //se deu certo avisa o usuario e limpa os campos
+        alert('Registro salvo');
         document.getElementById('form').reset();
       } catch (err) {
+        //se deu errado avisa e mostra o erro no console
         alert('Erro ao registrar. Veja o console.');
         console.error(err);
       }
